@@ -1,3 +1,9 @@
+import { Vazirmatn } from "next/font/google";
+
+const vazir = Vazirmatn({
+  subsets: ["arabic"],
+});
+
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
 
