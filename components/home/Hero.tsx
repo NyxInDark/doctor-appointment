@@ -55,38 +55,37 @@ export default function Hero() {
 
             <div className="grid grid-cols-3 gap-6 mt-12">
 
-              <div>
-                <h3 className="text-3xl font-bold text-blue-600">
-                  +500
-                </h3>
+  <div className="bg-white rounded-2xl shadow-sm p-4">
+    <h3 className="text-3xl font-bold text-blue-600">
+      +500
+    </h3>
 
-                <p className="text-gray-500">
-                  پزشک متخصص
-                </p>
-              </div>
+    <p className="text-gray-500">
+      پزشک متخصص
+    </p>
+  </div>
 
-              <div>
-                <h3 className="text-3xl font-bold text-blue-600">
-                  +10K
-                </h3>
+  <div className="bg-white rounded-2xl shadow-sm p-4">
+    <h3 className="text-3xl font-bold text-blue-600">
+      +10K
+    </h3>
 
-                <p className="text-gray-500">
-                  بیمار فعال
-                </p>
-              </div>
+    <p className="text-gray-500">
+      بیمار فعال
+    </p>
+  </div>
 
-              <div>
-                <h3 className="text-3xl font-bold text-blue-600">
-                  +50
-                </h3>
+  <div className="bg-white rounded-2xl shadow-sm p-4">
+    <h3 className="text-3xl font-bold text-blue-600">
+      +50
+    </h3>
 
-                <p className="text-gray-500">
-                  تخصص پزشکی
-                </p>
-              </div>
+    <p className="text-gray-500">
+      تخصص پزشکی
+    </p>
+  </div>
 
-            </div>
-
+</div>
           </div>
 
         </div>

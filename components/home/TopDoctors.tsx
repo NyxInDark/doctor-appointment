@@ -5,31 +5,39 @@ const doctors = [
     name: "دکتر محمد رضایی",
     specialty: "قلب و عروق",
     rating: "4.9",
+    image:
+      "https://images.unsplash.com/photo-1559839734-2b71ea197ec2",
   },
   {
     name: "دکتر نرگس احمدی",
     specialty: "پوست و مو",
     rating: "4.8",
+    image:
+      "https://images.unsplash.com/photo-1594824476967-48c8b964273f",
   },
   {
     name: "دکتر امیر نادری",
     specialty: "مغز و اعصاب",
     rating: "5.0",
+    image:
+      "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d",
   },
   {
     name: "دکتر سارا موسوی",
     specialty: "کودکان",
     rating: "4.7",
+    image:
+      "https://images.unsplash.com/photo-1651008376811-b90baee60c1f",
   },
 ];
 
 export default function TopDoctors() {
   return (
-    <section className="py-16 bg-white">
+    <section className="py-20 bg-white">
       <div className="container mx-auto px-6">
 
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold">
+        <div className="flex justify-between items-center mb-10">
+          <h2 className="text-4xl font-bold">
             پزشکان برتر
           </h2>
 
@@ -43,10 +51,16 @@ export default function TopDoctors() {
           {doctors.map((doctor) => (
             <div
               key={doctor.name}
-              className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden hover:shadow-lg transition"
+              className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden hover:-translate-y-2 hover:shadow-xl duration-300"
             >
-              <div className="h-56 bg-gray-100 flex items-center justify-center">
-                تصویر پزشک
+              <div className="h-56 overflow-hidden">
+
+                <img
+                  src={doctor.image}
+                  alt={doctor.name}
+                  className="w-full h-full object-cover"
+                />
+
               </div>
 
               <div className="p-5 text-center">

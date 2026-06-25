@@ -1,3 +1,7 @@
+"use client";
+
+import { useState } from "react";
+
 const faqs = [
   {
     q: "چگونه نوبت رزرو کنم؟",
@@ -14,6 +18,8 @@ const faqs = [
 ];
 
 export default function FAQ() {
+  const [open, setOpen] = useState<number | null>(0);
+
   return (
     <section className="py-20 bg-white">
       <div className="container mx-auto px-6">
@@ -22,26 +28,32 @@ export default function FAQ() {
           <h2 className="text-4xl font-bold">
             سوالات متداول
           </h2>
-
-          <p className="text-gray-500 mt-3">
-            پاسخ سوالات پرتکرار کاربران
-          </p>
         </div>
 
         <div className="max-w-4xl mx-auto space-y-4">
 
-          {faqs.map((faq) => (
+          {faqs.map((faq, index) => (
             <div
               key={faq.q}
-              className="border border-gray-200 rounded-2xl p-6"
+              className="border rounded-2xl overflow-hidden"
             >
-              <h3 className="font-semibold text-lg">
+              <button
+                onClick={() =>
+                  setOpen(open === index ? null : index)
+                }
+                className="w-full p-6 text-right font-semibold flex justify-between"
+              >
                 {faq.q}
-              </h3>
+                <span>
+                  {open === index ? "-" : "+"}
+                </span>
+              </button>
 
-              <p className="text-gray-500 mt-3 leading-8">
-                {faq.a}
-              </p>
+              {open === index && (
+                <div className="px-6 pb-6 text-gray-500">
+                  {faq.a}
+                </div>
+              )}
             </div>
           ))}
 
