@@ -1,7 +1,13 @@
+import DoctorCardSkeleton from "@/components/ui/DoctorCardSkeleton";
+
 export default function Loading() {
   return (
-    <div className="min-h-screen flex justify-center items-center">
-      <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-    </div>
+    <main className="container mx-auto px-4 py-20">
+      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {[...Array(8)].map((_, i) => (
+          <DoctorCardSkeleton key={i} />
+        ))}
+      </div>
+    </main>
   );
 }
