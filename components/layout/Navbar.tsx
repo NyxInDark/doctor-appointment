@@ -1,37 +1,67 @@
+"use client";
+
 import Link from "next/link";
-import { FaUserCircle } from "react-icons/fa";
+import { useState } from "react";
+import {
+  FaBars,
+  FaTimes,
+  FaUserCircle,
+} from "react-icons/fa";
 
 export default function Navbar() {
+  const [open, setOpen] = useState(false);
+
+  const links = [
+    "خانه",
+    "پزشکان",
+    "تخصص‌ها",
+    "درباره ما",
+    "تماس با ما",
+  ];
+
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b border-gray-100">
+    <header className="sticky top-0 z-50 backdrop-blur-md bg-white/80 border-b">
 
-      <div className="container mx-auto px-6 py-5 flex items-center justify-between">
+      <div className="container mx-auto px-6 py-5 flex justify-between items-center">
 
-        <div className="flex items-center gap-2">
-          <div className="w-10 h-10 bg-blue-600 rounded-xl text-white flex items-center justify-center font-bold">
-            +
-          </div>
-
-          <h1 className="text-2xl font-bold text-blue-600">
-            کد رزرو
-          </h1>
-        </div>
+        <h1 className="text-2xl font-bold text-blue-600">
+          کد رزرو
+        </h1>
 
         <nav className="hidden md:flex gap-8">
-          <Link href="#">خانه</Link>
-          <Link href="#">پزشکان</Link>
-          <Link href="#">تخصص‌ها</Link>
-          <Link href="#">درباره ما</Link>
-          <Link href="#">تماس با ما</Link>
+          {links.map((link) => (
+            <Link href="#" key={link}>
+              {link}
+            </Link>
+          ))}
         </nav>
 
-        <button className="bg-blue-600 text-white px-5 py-3 rounded-xl flex items-center gap-2 hover:bg-blue-700 transition">
+        <button className="hidden md:flex bg-blue-600 text-white px-5 py-3 rounded-xl items-center gap-2">
           <FaUserCircle />
           ورود
         </button>
 
+        <button
+          onClick={() => setOpen(!open)}
+          className="md:hidden text-2xl"
+        >
+          {open ? <FaTimes /> : <FaBars />}
+        </button>
       </div>
 
+      {open && (
+        <div className="md:hidden bg-white border-t">
+          <div className="flex flex-col p-6 gap-5">
+
+            {links.map((link) => (
+              <Link href="#" key={link}>
+                {link}
+              </Link>
+            ))}
+
+          </div>
+        </div>
+      )}
     </header>
   );
 }
