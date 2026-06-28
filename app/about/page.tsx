@@ -1,13 +1,3 @@
-export default function AboutPage() {
-  return (
-    <div className="container mx-auto py-20">
-      <h1 className="text-4xl font-bold">
-        درباره ما
-      </h1>
-    </div>
-  );
-}
-
 import AboutHero from "@/components/about/AboutHero";
 import WhyUs from "@/components/about/WhyUs";
 import ContactInfo from "@/components/about/ContactInfo";

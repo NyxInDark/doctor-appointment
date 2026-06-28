@@ -12,7 +12,7 @@ const doctors = [
   },
   {
     id: 2,
-    name: "دکتر سارا حسینی",
+    name: "دکتر مرتضی حسینی",
     specialty: "متخصص مغز و اعصاب",
     city: "شیراز",
     rating: 4.8,
