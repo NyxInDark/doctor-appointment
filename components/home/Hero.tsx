@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function Hero() {
   return (
     <section className="bg-gradient-to-b from-blue-50 to-white py-24">
@@ -12,9 +14,16 @@ export default function Hero() {
 
               <div className="absolute bottom-5 -left-5 w-16 h-16 bg-blue-200 rounded-full"></div>
 
-              <div className="h-[500px] w-[450px] rounded-[40px] bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center shadow-xl">
+              <div className="h-[500px] w-[600px] rounded-[70px] bg-gradient-to-br from-blue-100 to-blue-50 flex items-center justify-center shadow-xl">
                 <span className="text-gray-500">
-                  تصویر پزشکان
+                 <Image
+                 src="/images/hero/doctor-hero.png"
+                 alt="Doctor Hero"
+                 width={800}
+                 height={800}
+                 className="object-contain"
+  
+                /> 
                 </span>
               </div>
 

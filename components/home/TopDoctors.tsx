@@ -7,8 +7,8 @@ const doctors = [
     specialty: "تخصص قلب",
     city: "تهران",
     rating: 4.9,
-    experience: "12 سال سابقه",
-    image: "/doctors/doc1.jpg",
+    experience: "8 سال سابقه",
+    image: "/images/doctors/doc1.jpg",
   },
   {
     id: 2,
@@ -16,8 +16,17 @@ const doctors = [
     specialty: "متخصص مغز و اعصاب",
     city: "شیراز",
     rating: 4.8,
-    experience: "8 سال سابقه",
-    image: "/doctors/doc2.jpg",
+    experience: "15 سال سابقه",
+    image: "/images/doctors/doc2.jpg",
+  },
+  {
+    id: 3,
+    name: "دکتر نرگس احمدی",
+    specialty: "پزشک عمومی",
+    city: "اصفهان",
+    rating: 4.7,
+    experience: "5 سال سابقه",
+    image: "/images/doctors/doc3.jpg",
   },
 ];
 
