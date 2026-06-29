@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Vazirmatn } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/context/AuthContext";
 
 const vazirmatn = Vazirmatn({
   subsets: ["arabic"],
@@ -19,7 +20,9 @@ export default function RootLayout({
   return (
     <html lang="fa" dir="rtl">
       <body className={vazirmatn.className}>
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );
