@@ -13,7 +13,7 @@ export default function Navbar() {
     { title: "پزشکان", href: "/doctors" },
     { title: "تخصص‌ها", href: "/specialties" },
     { title: "درباره ما", href: "/about" },
-    { title: "تماس با ما", href: "/contact" },
+   { title: "تماس با ما", href: "/#contact" },
   ];
 
   return (

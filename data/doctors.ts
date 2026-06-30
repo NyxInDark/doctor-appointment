@@ -5,41 +5,61 @@ export const doctors = [
     specialty: "متخصص قلب و عروق",
     image: "/images/doctors/doc1.jpg",
     address: "تهران، خیابان آزادی",
-    about:
-      "دکتر وارسته دارای بیش از ۱۵ سال سابقه در زمینه قلب و عروق هستند.",
+    about: "دکتر وارسته دارای بیش از ۱۵ سال سابقه در زمینه قلب و عروق هستند.",
     firstAppointment: "دوشنبه",
+    phone: "021-33445566",
+    instagram: "doctor.varaste",
+    website: "drvaraste.ir",
+    reviews: [
+      { name: "فاطمه", rating: 5, text: "دکتر وارسته با آرامش مشکل من رو توضیح دادند و خیلی کمک کرد." },
+      { name: "مهسا ایزدیان", rating: 5, text: "نوبت در سریع‌ترین زمان ممکن داده شد و واقعا راضی بودم." },
+      { name: "علی رضایی", rating: 4, text: "پزشک با تجربه و دلسوزی هستند، بسیار توصیه می‌کنم." },
+    ],
   },
-
   {
     id: 2,
     name: "دکتر علی راد",
     specialty: "متخصص پوست",
     image: "/images/doctors/doc2.jpg",
     address: "تهران، سعادت آباد",
-    about:
-      "متخصص بیماری‌های پوست، مو و زیبایی.",
+    about: "متخصص بیماری‌های پوست، مو و زیبایی.",
     firstAppointment: "سه شنبه",
+    phone: "021-22334455",
+    instagram: "doctor.alirad",
+    website: "draliRad.ir",
+    reviews: [
+      { name: "زهرا", rating: 5, text: "بسیار حرفه‌ای و دقیق هستند." },
+      { name: "سینا", rating: 4, text: "نتیجه درمان عالی بود." },
+    ],
   },
-
   {
     id: 3,
     name: "دکتر حسینی",
     specialty: "جراح بینی",
     image: "/images/doctors/doc3.jpg",
     address: "تهران، ونک",
-    about:
-      "دارای بیش از ۱۲ سال سابقه جراحی بینی.",
+    about: "دارای بیش از ۱۲ سال سابقه جراحی بینی.",
     firstAppointment: "چهارشنبه",
+    phone: "021-44556677",
+    instagram: "doctor.hosseini",
+    website: "drhosseini.ir",
+    reviews: [
+      { name: "نگار", rating: 5, text: "جراحی بسیار خوبی انجام دادند، ممنونم." },
+    ],
   },
-
   {
     id: 4,
     name: "دکتر سعادتی",
     specialty: "متخصص گوش و حلق و بینی",
     image: "/images/doctors/doc4.jpg",
     address: "تهران، شهرک غرب",
-    about:
-      "متخصص گوش و حلق و بینی.",
+    about: "متخصص گوش و حلق و بینی.",
     firstAppointment: "پنجشنبه",
+    phone: "021-55667788",
+    instagram: "doctor.saadati",
+    website: "drsaadati.ir",
+    reviews: [
+      { name: "حسین", rating: 5, text: "خیلی صبور و با حوصله بودند." },
+    ],
   },
 ];
