@@ -28,12 +28,11 @@ export default function DoctorProfile() {
   const [selectedDate, setSelectedDate] = useState<DateObject | null>(null);
   const [selectedTime, setSelectedTime] = useState("");
   const [message, setMessage] = useState<MessageState>({ text: "", type: null });
+  const [loading, setLoading] = useState(false);
 
-  if (!doctor) {
-    notFound();
-  }
+  if (!doctor) notFound();
 
-  const handleReservation = () => {
+  const handleReservation = async () => {
     if (!isLoggedIn) {
       setMessage({ text: "ابتدا وارد حساب کاربری خود شوید", type: "error" });
       setTimeout(() => router.push("/login"), 1500);
@@ -52,15 +51,42 @@ export default function DoctorProfile() {
       return;
     }
 
-    addAppointment({
-      doctorId: doctor.id,
-      doctorName: doctor.name,
-      specialty: doctor.specialty,
-      date: dateStr,
-      time: selectedTime,
-    });
+    setLoading(true);
 
-    setMessage({ text: "نوبت شما با موفقیت رزرو شد", type: "success" });
+    try {
+      const res = await fetch("/api/appointments/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          doctorId: doctor.id,
+          doctorName: doctor.name,
+          specialty: doctor.specialty,
+          date: dateStr,
+          time: selectedTime,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        setMessage({ text: data.message, type: "error" });
+        return;
+      }
+
+      addAppointment({
+        doctorId: doctor.id,
+        doctorName: doctor.name,
+        specialty: doctor.specialty,
+        date: dateStr,
+        time: selectedTime,
+      });
+
+      setMessage({ text: "نوبت شما با موفقیت رزرو شد", type: "success" });
+    } catch {
+      setMessage({ text: "خطای سرور، لطفاً دوباره تلاش کنید", type: "error" });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -69,7 +95,6 @@ export default function DoctorProfile() {
         <div className="grid lg:grid-cols-3 gap-8">
 
           <div className="lg:col-span-2 space-y-8">
-
             <div className="bg-white rounded-3xl p-8 shadow-sm">
               <div className="flex flex-row-reverse gap-8">
                 <Image
@@ -80,9 +105,7 @@ export default function DoctorProfile() {
                   className="rounded-2xl object-cover"
                 />
                 <div className="flex-1">
-                  <div className="text-gray-400 mb-2 text-sm">
-                    کد پزشک: {40000 + doctor.id}
-                  </div>
+                  <div className="text-gray-400 mb-2 text-sm">کد پزشک: {40000 + doctor.id}</div>
                   <h1 className="text-2xl font-bold">{doctor.name}</h1>
                   <p className="text-gray-500 mt-2">{doctor.specialty}</p>
                   <div className="flex gap-1 mt-3">
@@ -91,12 +114,10 @@ export default function DoctorProfile() {
                     ))}
                   </div>
                   <div className="flex items-center gap-2 mt-4 text-gray-600 text-sm">
-                    <FaLocationDot />
-                    {doctor.address}
+                    <FaLocationDot />{doctor.address}
                   </div>
                   <div className="flex items-center gap-2 mt-2 text-gray-600 text-sm">
-                    <LuClock3 />
-                    اولین نوبت: {doctor.firstAppointment}
+                    <LuClock3 />اولین نوبت: {doctor.firstAppointment}
                   </div>
                 </div>
               </div>
@@ -152,7 +173,6 @@ export default function DoctorProfile() {
                 ))}
               </div>
             </div>
-
           </div>
 
           <div>
@@ -160,13 +180,11 @@ export default function DoctorProfile() {
               <h2 className="font-bold text-lg text-gray-800 mb-4">تقویم</h2>
 
               {message.type && (
-                <div
-                  className={`w-full py-3 px-4 rounded-xl text-center text-sm font-bold mb-4 transition-all duration-300 ${
-                    message.type === "success"
-                      ? "bg-green-100 text-green-700 border border-green-200"
-                      : "bg-red-100 text-red-700 border border-red-200"
-                  }`}
-                >
+                <div className={`w-full py-3 px-4 rounded-xl text-center text-sm font-bold mb-4 transition-all duration-300 ${
+                  message.type === "success"
+                    ? "bg-green-100 text-green-700 border border-green-200"
+                    : "bg-red-100 text-red-700 border border-red-200"
+                }`}>
                   {message.text}
                 </div>
               )}
@@ -181,9 +199,10 @@ export default function DoctorProfile() {
 
               <button
                 onClick={handleReservation}
-                className="w-full h-12 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition"
+                disabled={loading}
+                className="w-full h-12 rounded-xl bg-blue-600 text-white font-bold hover:bg-blue-700 transition disabled:opacity-50"
               >
-                رزرو نوبت
+                {loading ? "در حال ثبت..." : "رزرو نوبت"}
               </button>
             </div>
           </div>

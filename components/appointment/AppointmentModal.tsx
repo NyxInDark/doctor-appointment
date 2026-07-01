@@ -5,10 +5,14 @@ import { DateObject } from "react-multi-date-picker";
 import PersianCalendar from "./PersianCalendar";
 import TimeSlots from "./TimeSlots";
 import { useAuth } from "@/context/AuthContext";
+import { useAppointments } from "@/context/AppointmentContext";
 
 interface Props {
   open: boolean;
   onClose: () => void;
+  doctorId: number;
+  doctorName: string;
+  specialty: string;
 }
 
 interface MessageState {
@@ -16,47 +20,44 @@ interface MessageState {
   type: "success" | "error" | null;
 }
 
-export default function AppointmentModal({ open, onClose }: Props) {
+export default function AppointmentModal({ open, onClose, doctorId, doctorName, specialty }: Props) {
   const router = useRouter();
   const { isLoggedIn } = useAuth();
+  const { addAppointment, isAlreadyBooked } = useAppointments();
   const [selectedDate, setSelectedDate] = useState<DateObject | null>(null);
   const [selectedTime, setSelectedTime] = useState("");
   const [message, setMessage] = useState<MessageState>({ text: "", type: null });
-  const [hasAlreadyBooked, setHasAlreadyBooked] = useState<boolean>(false);
 
   if (!open) return null;
 
   const handleReservation = () => {
     if (!isLoggedIn) {
-      setMessage({
-        text: "ابتدا وارد حساب کاربری خود شوید",
-        type: "error",
-      });
+      setMessage({ text: "ابتدا وارد حساب کاربری خود شوید", type: "error" });
       setTimeout(() => router.push("/login"), 1500);
       return;
     }
 
     if (!selectedDate || !selectedTime) {
-      setMessage({
-        text: "لطفاً ابتدا تاریخ و ساعت نوبت خود را انتخاب کنید.",
-        type: "error",
-      });
+      setMessage({ text: "لطفاً ابتدا تاریخ و ساعت نوبت خود را انتخاب کنید.", type: "error" });
       return;
     }
 
-    if (hasAlreadyBooked) {
-      setMessage({
-        text: "شما از قبل این نوبت را رزرو کرده‌اید",
-        type: "error",
-      });
+    const dateStr = selectedDate.format("YYYY/MM/DD");
+
+    if (isAlreadyBooked(doctorId, dateStr, selectedTime)) {
+      setMessage({ text: "شما قبلاً این نوبت را رزرو کرده‌اید", type: "error" });
       return;
     }
 
-    setMessage({
-      text: "نوبت شما با موفقیت رزرو شد",
-      type: "success",
+    addAppointment({
+      doctorId,
+      doctorName,
+      specialty,
+      date: dateStr,
+      time: selectedTime,
     });
-    setHasAlreadyBooked(true);
+
+    setMessage({ text: "نوبت شما با موفقیت رزرو شد", type: "success" });
   };
 
   return (

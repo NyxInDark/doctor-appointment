@@ -10,10 +10,26 @@ export default function LoginPage() {
   const [phone, setPhone] = useState("");
   const [otp, setOtp] = useState(["", "", "", "", ""]);
   const [otpError, setOtpError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const [timer, setTimer] = useState(95);
+  const [loading, setLoading] = useState(false);
+  const [devOtp, setDevOtp] = useState("");
 
-  const handleSendCode = () => {
-    if (phone.length >= 10) {
+  const handleSendCode = async () => {
+    if (phone.length < 10) return;
+    setLoading(true);
+    try {
+      const res = await fetch("/api/user/send-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setErrorMsg(data.message);
+        return;
+      }
+      setDevOtp(data.otp); // فقط برای تست - در production حذف کن
       setStep("otp");
       const interval = setInterval(() => {
         setTimer((prev) => {
@@ -21,6 +37,10 @@ export default function LoginPage() {
           return prev - 1;
         });
       }, 1000);
+    } catch {
+      setErrorMsg("خطای سرور");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -30,22 +50,37 @@ export default function LoginPage() {
     newOtp[index] = value;
     setOtp(newOtp);
     setOtpError(false);
+    setErrorMsg("");
     if (value && index < 4) {
       document.getElementById(`otp-${index + 1}`)?.focus();
     }
   };
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     const code = otp.join("");
     if (code.length < 5) {
       setOtpError(true);
       return;
     }
-    if (code === "12345") {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/user/verify-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone, code }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setOtpError(true);
+        setErrorMsg(data.message);
+        return;
+      }
       login(phone);
       router.push("/profile");
-    } else {
-      setOtpError(true);
+    } catch {
+      setErrorMsg("خطای سرور");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -75,11 +110,13 @@ export default function LoginPage() {
               onChange={(e) => setPhone(e.target.value)}
               className="w-full border border-gray-200 p-3 rounded-xl mb-4 text-right focus:outline-none focus:border-blue-400"
             />
+            {errorMsg && <p className="text-red-500 text-sm mb-2">{errorMsg}</p>}
             <button
               onClick={handleSendCode}
-              className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition"
+              disabled={loading}
+              className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition disabled:opacity-50"
             >
-              دریافت کد تایید
+              {loading ? "در حال ارسال..." : "دریافت کد تایید"}
             </button>
           </>
         ) : (
@@ -87,6 +124,13 @@ export default function LoginPage() {
             <p className="text-gray-500 text-sm mb-6">
               کد ارسال شده به شماره {phone} را وارد کنید
             </p>
+
+            {/* فقط برای تست - در production حذف کن */}
+            {devOtp && (
+              <p className="text-blue-500 text-sm mb-3 bg-blue-50 p-2 rounded-xl">
+                کد تست: {devOtp}
+              </p>
+            )}
 
             <div className="flex justify-center gap-2 mb-2" dir="ltr">
               {otp.map((digit, i) => (
@@ -106,9 +150,7 @@ export default function LoginPage() {
               ))}
             </div>
 
-            {otpError && (
-              <p className="text-red-500 text-sm mb-2">کد وارد شده اشتباه است</p>
-            )}
+            {errorMsg && <p className="text-red-500 text-sm mb-2">{errorMsg}</p>}
 
             <p className="text-gray-400 text-sm mb-4">
               {timer > 0 ? `${formatTime(timer)} تا دریافت مجدد کد` : "ارسال مجدد کد"}
@@ -116,9 +158,10 @@ export default function LoginPage() {
 
             <button
               onClick={handleVerify}
-              className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition"
+              disabled={loading}
+              className="w-full bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition disabled:opacity-50"
             >
-              ورود
+              {loading ? "در حال بررسی..." : "ورود"}
             </button>
           </>
         )}
