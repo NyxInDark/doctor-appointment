@@ -2,9 +2,12 @@
 import { useState } from "react";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import { FaCamera } from "react-icons/fa";
+import { FaCamera, FaCalendarAlt, FaClock, FaStethoscope } from "react-icons/fa";
+import { useAppointments } from "@/context/AppointmentContext";
 
 export default function ProfilePage() {
+  const { appointments } = useAppointments();
+
   const [form, setForm] = useState({
     firstName: "فرنوش",
     lastName: "آسایش",
@@ -34,7 +37,6 @@ export default function ProfilePage() {
 
           <div className="bg-white rounded-3xl shadow-sm p-8">
 
-            {/* آواتار */}
             <div className="flex justify-center mb-8">
               <div className="relative">
                 <div className="w-24 h-24 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden">
@@ -54,7 +56,6 @@ export default function ProfilePage() {
               </div>
             </div>
 
-            {/* فرم */}
             <div className="grid grid-cols-2 gap-6">
 
               <div>
@@ -143,7 +144,6 @@ export default function ProfilePage() {
 
             </div>
 
-            {/* دکمه ذخیره */}
             <div className="mt-8 flex justify-start">
               <button
                 onClick={handleSubmit}
@@ -154,6 +154,43 @@ export default function ProfilePage() {
             </div>
 
           </div>
+
+          {/* نوبت‌های رزرو شده */}
+          <div className="bg-white rounded-3xl shadow-sm p-8 mt-8">
+            <h2 className="text-xl font-bold text-gray-800 mb-6">نوبت‌های رزرو شده</h2>
+
+            {appointments.length === 0 ? (
+              <p className="text-gray-400 text-center py-6">هنوز نوبتی رزرو نکرده‌اید.</p>
+            ) : (
+              <div className="space-y-4">
+                {appointments.map((appointment, i) => (
+                  <div
+                    key={i}
+                    className="border border-gray-100 rounded-2xl p-5 flex items-center justify-between bg-gray-50/50"
+                  >
+                    <div>
+                      <div className="flex items-center gap-2 font-bold text-gray-800">
+                        <FaStethoscope className="text-blue-600" />
+                        {appointment.doctorName}
+                      </div>
+                      <p className="text-gray-500 text-sm mt-1">{appointment.specialty}</p>
+                    </div>
+                    <div className="flex flex-col items-end gap-1 text-sm text-gray-600">
+                      <div className="flex items-center gap-2">
+                        <FaCalendarAlt className="text-blue-500" />
+                        {appointment.date}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <FaClock className="text-blue-500" />
+                        {appointment.time}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
         </div>
       </main>
       <Footer />

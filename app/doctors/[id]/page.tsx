@@ -10,6 +10,7 @@ import { DateObject } from "react-multi-date-picker";
 import PersianCalendar from "@/components/appointment/PersianCalendar";
 import TimeSlots from "@/components/appointment/TimeSlots";
 import { useAuth } from "@/context/AuthContext";
+import { useAppointments } from "@/context/AppointmentContext";
 
 interface MessageState {
   text: string;
@@ -20,13 +21,13 @@ export default function DoctorProfile() {
   const params = useParams();
   const router = useRouter();
   const { isLoggedIn } = useAuth();
+  const { addAppointment, isAlreadyBooked } = useAppointments();
   const id = params.id as string;
   const doctor = doctors.find((d) => d.id === Number(id));
 
   const [selectedDate, setSelectedDate] = useState<DateObject | null>(null);
   const [selectedTime, setSelectedTime] = useState("");
   const [message, setMessage] = useState<MessageState>({ text: "", type: null });
-  const [hasAlreadyBooked, setHasAlreadyBooked] = useState(false);
 
   if (!doctor) {
     notFound();
@@ -44,13 +45,22 @@ export default function DoctorProfile() {
       return;
     }
 
-    if (hasAlreadyBooked) {
-      setMessage({ text: "شما از قبل این نوبت را رزرو کرده‌اید", type: "error" });
+    const dateStr = selectedDate.format("YYYY/MM/DD");
+
+    if (isAlreadyBooked(doctor.id, dateStr, selectedTime)) {
+      setMessage({ text: "شما قبلاً این نوبت را رزرو کرده‌اید", type: "error" });
       return;
     }
 
+    addAppointment({
+      doctorId: doctor.id,
+      doctorName: doctor.name,
+      specialty: doctor.specialty,
+      date: dateStr,
+      time: selectedTime,
+    });
+
     setMessage({ text: "نوبت شما با موفقیت رزرو شد", type: "success" });
-    setHasAlreadyBooked(true);
   };
 
   return (
@@ -58,7 +68,6 @@ export default function DoctorProfile() {
       <div className="container mx-auto px-6">
         <div className="grid lg:grid-cols-3 gap-8">
 
-          {/* ستون اطلاعات دکتر */}
           <div className="lg:col-span-2 space-y-8">
 
             <div className="bg-white rounded-3xl p-8 shadow-sm">
@@ -107,7 +116,6 @@ export default function DoctorProfile() {
               </ul>
             </div>
 
-            {/* راه‌های ارتباطی */}
             <div className="bg-white rounded-3xl p-8">
               <h2 className="text-xl font-bold mb-4">راه‌های ارتباطی</h2>
               <div className="grid sm:grid-cols-3 gap-4">
@@ -126,7 +134,6 @@ export default function DoctorProfile() {
               </div>
             </div>
 
-            {/* نظرات کاربران */}
             <div className="bg-white rounded-3xl p-8">
               <h2 className="text-xl font-bold mb-5">نظرات کاربران</h2>
               <div className="space-y-5">
@@ -148,7 +155,6 @@ export default function DoctorProfile() {
 
           </div>
 
-          {/* ستون تقویم و رزرو */}
           <div>
             <div className="bg-white rounded-3xl p-6 shadow-sm sticky top-24">
               <h2 className="font-bold text-lg text-gray-800 mb-4">تقویم</h2>

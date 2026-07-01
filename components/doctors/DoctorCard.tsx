@@ -80,8 +80,14 @@ export default function DoctorCard({ id, name, specialty, image }: Props) {
         </div>
       </div>
 
-      {/* ۳. اضافه کردن مودال رزرو به کامپوننت و پاس دادن استیت‌ها */}
-      <AppointmentModal open={isOpen} onClose={() => setIsOpen(false)} />
+      
+      <AppointmentModal
+  open={isOpen}
+  onClose={() => setIsOpen(false)}
+  doctorId={id}
+  doctorName={name}
+  specialty={specialty}
+/>
     </div>
   );
 }
